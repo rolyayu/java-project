@@ -1,0 +1,18 @@
+server:
+  port: 3000
+
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5433/pet
+    username: casual_user
+    password: password
+
+  jpa:
+    show-sql: true
+
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
