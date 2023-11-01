@@ -2,7 +2,7 @@ package by.vsu.pet.pet;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -24,6 +24,6 @@ public class Pet {
     @Column(nullable = false)
     private String breed;
 
-    @CreatedDate
+    @CreationTimestamp
     private LocalDateTime creationDate;
 }
