@@ -5,6 +5,7 @@ import by.vsu.pet.pet.dto.PetDtoMapper;
 import by.vsu.pet.pet.dto.RequestPetDto;
 import by.vsu.pet.pet.dto.UpdatePetDto;
 import by.vsu.pet.pet.utils.PetUtils;
+import by.vsu.pet.shared.exceptions.NotFoundException;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
@@ -36,7 +37,7 @@ public class PetServiceImpl implements PetService {
 
     @Override
     public Pet findById(int id) {
-        return repository.findById(id).orElseThrow(() -> new NoSuchElementException(String.format("Pet with %d id not found", id)));
+        return repository.findById(id).orElseThrow(() -> new NotFoundException(String.format("Pet with %d id not found", id)));
     }
 
     @Override
