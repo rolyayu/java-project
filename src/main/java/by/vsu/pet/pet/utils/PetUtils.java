@@ -17,6 +17,8 @@ import java.util.Set;
 public class PetUtils {
     private final Set<String> orders;
 
+    public final String DELIMITER = ":";
+
     public PetUtils() {
         orders = new HashSet<>();
         orders.add("name");
@@ -45,9 +47,11 @@ public class PetUtils {
     }
 
     public Sort.Order parseOrder(String rawOrder) {
-        var fieldWithOrder = rawOrder.split(",");
+        var fieldWithOrder = rawOrder.split(DELIMITER);
         if(fieldWithOrder.length!=2) {
-            throw new BadRequestException("Sorting should be given in way '[field],[order]'");
+            throw new BadRequestException(String.format(
+                    "Sorting should be given in way " +
+                            "'[field]%s[order]'",DELIMITER));
         }
         var fieldName = fieldWithOrder[0];
         var isDescending = fieldWithOrder[1].equals("desc");
