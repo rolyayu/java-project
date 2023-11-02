@@ -56,7 +56,8 @@ public class PetServiceImpl implements PetService {
 
     @Override
     public void deleteById(int id) {
-        repository.deleteById(id);
+        var foundedPet = this.findById(id);
+        repository.delete(foundedPet);
     }
 
     @Override
