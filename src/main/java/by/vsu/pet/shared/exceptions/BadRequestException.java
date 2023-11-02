@@ -1,7 +1,10 @@
 package by.vsu.pet.shared.exceptions;
 
-public class BadRequestException extends HttpException{
+import org.springframework.http.HttpStatusCode;
+import org.springframework.web.server.ResponseStatusException;
+
+public class BadRequestException extends ResponseStatusException {
     public BadRequestException(String message) {
-        super(message, (short) 400);
+        super(HttpStatusCode.valueOf(400),message);
     }
 }

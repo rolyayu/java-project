@@ -1,7 +1,10 @@
 package by.vsu.pet.shared.exceptions;
 
-public class NotFoundException extends HttpException{
+import org.springframework.http.HttpStatusCode;
+import org.springframework.web.server.ResponseStatusException;
+
+public class NotFoundException extends ResponseStatusException {
     public NotFoundException(String message) {
-        super(message, (short) 404);
+        super(HttpStatusCode.valueOf(404),message);
     }
 }
