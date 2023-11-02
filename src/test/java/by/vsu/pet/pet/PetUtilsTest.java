@@ -20,12 +20,12 @@ public class PetUtilsTest {
 
     @Test
     void PetUtils_ParseOrder_ReturnParsedOrder() {
-        var rawOrder = "name,asc";
+        var rawOrder = buildOrders("name","asc");
 
         var parsedOrder = petUtils.parseOrder(rawOrder);
 
         Assertions.assertTrue(parsedOrder.isAscending());
-        Assertions.assertEquals("name",parsedOrder.getProperty());
+        Assertions.assertEquals("name", parsedOrder.getProperty());
     }
 
     @Test
@@ -39,7 +39,7 @@ public class PetUtilsTest {
 
     @Test
     void PetUtils_ParseOrder_ThrowBadRequestBecauseOfWrongField() {
-        var wrongFieldName = "nname,asc";
+        var wrongFieldName = buildOrders("nname","asc");
 
         Assertions.assertThrows(BadRequestException.class, () -> {
             petUtils.parseOrder(wrongFieldName);
@@ -48,12 +48,13 @@ public class PetUtilsTest {
 
     @Test
     void PetUtils_ProcessSort_ReturnSort() {
-        var rawOrders = List.of("name,asc", "breed,desc");
+        var rawOrders = List.of(buildOrders("name", "asc"),
+                buildOrders("breed","desc"));
 
         var sort = petUtils.processSort(rawOrders);
 
         Assertions.assertFalse(sort.isEmpty());
-        Assertions.assertEquals(2,sort.stream().count());
+        Assertions.assertEquals(2, sort.stream().count());
     }
 
     @Test
@@ -64,7 +65,11 @@ public class PetUtilsTest {
 
         var pageable = petUtils.buildPageable(requestPetDto);
 
-        Assertions.assertEquals(20,pageable.getPageSize());
-        Assertions.assertEquals(0,pageable.getOffset());
+        Assertions.assertEquals(20, pageable.getPageSize());
+        Assertions.assertEquals(0, pageable.getOffset());
+    }
+
+    public String buildOrders(String key, String value) {
+        return key + petUtils.DELIMITER + value;
     }
 }
