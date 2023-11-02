@@ -18,7 +18,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.ArrayList;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -122,7 +121,7 @@ public class PetServiceImplTest {
         Assertions.assertEquals(testPet, petList.get(0));
 
         verify(petRepository, times(1)).findAllByBreed(breed, mockPageable);
-        verify(petUtils,times(1)).buildPageable(request);
+        verify(petUtils, times(1)).buildPageable(request);
     }
 
     @Test
@@ -130,8 +129,8 @@ public class PetServiceImplTest {
         var petList = new ArrayList<Pet>();
         petList.add(testPet);
         var request = new RequestPetDto(testPet.getBreed()
-                ,testPet.getName());
-        given(petRepository.findAllByNameAndBreed(anyString(),anyString())).willReturn(petList);
+                , testPet.getName());
+        given(petRepository.findAllByNameAndBreed(anyString(), anyString())).willReturn(petList);
 
         var foundedPets = petService.findAll(request);
 
@@ -144,11 +143,13 @@ public class PetServiceImplTest {
 
     @Test
     void PetService_DeleteById_ReturnIfDeleted() {
-        doNothing().when(petRepository).deleteById(anyInt());
+        when(petRepository.findById(anyInt())).thenReturn(Optional.of(testPet));
+        doNothing().when(petRepository).delete(testPet);
 
         petService.deleteById(1);
 
-        verify(petRepository,times(1)).deleteById(anyInt());
+        verify(petRepository,times(1)).findById(anyInt());
+        verify(petRepository, times(1)).delete(testPet);
     }
 
     @Test
@@ -161,12 +162,12 @@ public class PetServiceImplTest {
         given(petRepository.findById(anyInt())).willReturn(Optional.of(testPet));
         given(petRepository.save(any(Pet.class))).willReturn(updatedPet);
 
-        var savedPet = petService.update(1,updateDto);
+        var savedPet = petService.update(1, updateDto);
 
         Assertions.assertEquals(updatedPet, savedPet);
 
-        verify(petRepository,times(1)).findById(anyInt());
-        verify(petRepository,times(1)).save(any(Pet.class));
+        verify(petRepository, times(1)).findById(anyInt());
+        verify(petRepository, times(1)).save(any(Pet.class));
     }
 
     @Test
@@ -175,6 +176,6 @@ public class PetServiceImplTest {
         given(petRepository.findById(anyInt())).willReturn(Optional.empty());
 
         Assertions.assertThrows(NotFoundException.class,
-                () -> petService.update(1,updateDto));
+                () -> petService.update(1, updateDto));
     }
 }
