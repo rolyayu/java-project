@@ -34,7 +34,7 @@ dependencies {
 	testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.3")
 	testImplementation("org.mockito:mockito-core:5.6.0")
 	testImplementation("org.junit.jupiter:junit-jupiter-engine:5.6.3")
-
+	developmentOnly("com.h2database:h2:2.2.224")
 }
 
 tasks.withType<Test> {
